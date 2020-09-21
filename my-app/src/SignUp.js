@@ -37,6 +37,10 @@ const SignUp = () => {
         preventDefault()
     }
 
+    const onChange = (event) => {
+        setFormValue(event.target.value)
+    }
+
     const [formValue, setFormValue] = useState('')
 
 
