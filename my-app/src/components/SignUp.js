@@ -2,12 +2,10 @@ import React from 'react'
 
 
 
-const SignUP = () => {
+export const SignUp = () => {
     return (
         <div>
 
         </div>
     )
 }
-
-export default SignUP
