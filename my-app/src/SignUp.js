@@ -33,24 +33,40 @@ const StyledSignUp = styled.div`
 
 const SignUp = (props) => {
 
-
+    
     const [formValue, setFormValue] = useState({
         name: "",
-        value: "",
+        email: "",
+        password: "",
+        cbx: "on"
 
     })
+    console.log(formValue)
+
+
+   
+    const addUser = (newUser) => {
+        setFormValue({...formValue, newUser})
+    }
 
 
     const onSubmit = (event) => {
         event.preventDefault()
+        addUser(formValue)
+        setFormValue({name: "", email: "", password: "", cbx: "off"})
+        
     }
 
     const onChange = (event) => {
         setFormValue({
             ...formValue, [event.target.name] : event.target.value
+            
         })
+       
         
     }
+
+    
 
     
 
@@ -59,25 +75,14 @@ const SignUp = (props) => {
         <StyledSignUp>
             <h2>Sign Up</h2>
             <form onSubmit={onSubmit}>
-                <label> First Name
+                <label> Name
                     <input 
                     type='text'
-                    placeholder="Your First Name"
-                    name="firstname"
-                    value={formValue.firstname}
+                    placeholder="Your Name"
+                    name="name"
+                    value={formValue.name}
                     onChange={onChange}
                     
-                    
-                    />
-                </label>
-
-                <label> Last Name
-                    <input 
-                    type='text'
-                    placeholder="Your Last Name"
-                    name="lastname"
-                    value={formValue.lastname}
-                    onChange={onChange}
                     
                     />
                 </label>
@@ -109,8 +114,7 @@ const SignUp = (props) => {
                     type='checkbox'
                     name="cbx"
                     required
-                    checked
-                    onChange={onChange}
+                    // onChange={onChange}
 
                     
                     />
