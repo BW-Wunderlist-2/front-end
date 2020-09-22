@@ -9,7 +9,7 @@ const StyledSignUp = styled.div`
         flex-flow: column;
     }
     input{
-        width: 50%;
+        width: 40%;
         display: flex;
         margin: 2% auto;
         text-align: center;
@@ -21,7 +21,7 @@ const StyledSignUp = styled.div`
     }
 
     button{
-        width: 50%;
+        width: 40%;
         margin: 0 auto;
         text-align: center;
         padding: 1%;
@@ -31,18 +31,28 @@ const StyledSignUp = styled.div`
     }
 `
 
-const SignUp = () => {
+const SignUp = (props) => {
 
-    const onSubmit = () => {
-        preventDefault()
+
+    const [formValue, setFormValue] = useState({
+        name: "",
+        value: "",
+
+    })
+
+
+    const onSubmit = (event) => {
+        event.preventDefault()
     }
 
     const onChange = (event) => {
-        setFormValue(event.target.value)
+        setFormValue({
+            ...formValue, [event.target.name] : event.target.value
+        })
+        
     }
 
-    const [formValue, setFormValue] = useState('')
-
+    
 
 
     return (
@@ -54,7 +64,10 @@ const SignUp = () => {
                     type='text'
                     placeholder="Your First Name"
                     name="firstname"
-                    onChange={}
+                    value={formValue.firstname}
+                    onChange={onChange}
+                    
+                    
                     />
                 </label>
 
@@ -63,7 +76,9 @@ const SignUp = () => {
                     type='text'
                     placeholder="Your Last Name"
                     name="lastname"
-                    onChange={}
+                    value={formValue.lastname}
+                    onChange={onChange}
+                    
                     />
                 </label>
 
@@ -72,7 +87,9 @@ const SignUp = () => {
                     type='email'
                     placeholder="Your E-Mail"
                     name="email"
-                    onChange={}
+                    value={formValue.email}
+                    onChange={onChange}
+                    
                     />
                 </label>
 
@@ -81,7 +98,9 @@ const SignUp = () => {
                     type='password'
                     placeholder="Your Password"
                     name="password"
-                    onChange={}
+                    value={formValue.password}
+                    onChange={onChange}
+                    
                     />
                 </label>
 
@@ -90,12 +109,15 @@ const SignUp = () => {
                     type='checkbox'
                     name="cbx"
                     required
-                    onChange={}
+                    checked
+                    onChange={onChange}
+
+                    
                     />
                     
                 </label>
 
-                <button>Submit</button>
+                <button onSubmit={onSubmit}>Submit</button>
             </form>
         </StyledSignUp>
     )
