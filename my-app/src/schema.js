@@ -9,11 +9,14 @@ export default yup.object().shape({
         .required('E-mail field is Required'),
 
     password: yup.string()
-        .required('Password field is Required'),
+        .required('Password field is Required')
+        .min(8, 'Password must be 8 characters or longer'),
 
-    
+    cbx: yup.boolean()
     
 })
+
+
 
 
 

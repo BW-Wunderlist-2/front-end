@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import * as yup from 'yup'
+import schema from './schema'
 
 const StyledSignUp = styled.div`
     form{
@@ -16,7 +18,7 @@ const StyledSignUp = styled.div`
     }
     h2{
         margin: 5% 0;
-        margin-bottom: 15%;
+        margin-bottom: 5%;
         justify-self: center;
     }
 
@@ -28,44 +30,75 @@ const StyledSignUp = styled.div`
     }
     .checkbox{
         margin: 5% auto;
+        font-size: 1rem;
+    }
+    h3{
+        font-size: 1rem;
+        color: red;
     }
 `
 
 const SignUp = (props) => {
 
     
+
+    
     const [formValue, setFormValue] = useState({
         name: "",
         email: "",
         password: "",
-        cbx: "on"
+        cbx: false
 
     })
-    console.log(formValue)
 
+    const [errors, setErrors] = useState({
+        name: "",
+        email: "",
+        password: "",
+        cbx: ""
 
-   
-    const addUser = (newUser) => {
-        setFormValue({...formValue, newUser})
+    })
+
+    
+
+    const validate = (event) => {
+        yup
+        .reach(schema, event.target.name)
+        .validate(event.target.value)
+        .then(valid => {
+            setErrors({
+                ...errors,
+                [event.target.name] : ""
+               
+            })
+        })
+        .catch(err => {
+            setErrors({
+                ...errors,
+                [event.target.name] : err.errors[0]
+               
+            })
+        })
     }
+   
+    
 
 
     const onSubmit = (event) => {
         event.preventDefault()
-        addUser(formValue)
-        setFormValue({name: "", email: "", password: "", cbx: "off"})
+        setFormValue({name: "", email: "", password: "", cbx: false})
         
     }
 
-    const onChange = (event) => {
-        setFormValue({
-            ...formValue, [event.target.name] : event.target.value
-            
-        })
-       
-        
+
+    const inputChange = (event) => {
+        event.persist()
+        validate(event)
+        let value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        setFormValue({...formValue, [event.target.name] : value})
     }
 
+  
     
 
     
@@ -75,13 +108,18 @@ const SignUp = (props) => {
         <StyledSignUp>
             <h2>Sign Up</h2>
             <form onSubmit={onSubmit}>
+                <h3>{errors.name}</h3>
+                <h3>{errors.email}</h3>
+                <h3>{errors.password}</h3>
+                <h3>{errors.cbx}</h3>
+
                 <label> Name
                     <input 
                     type='text'
                     placeholder="Your Name"
                     name="name"
                     value={formValue.name}
-                    onChange={onChange}
+                    onChange={inputChange}
                     
                     
                     />
@@ -93,7 +131,7 @@ const SignUp = (props) => {
                     placeholder="Your E-Mail"
                     name="email"
                     value={formValue.email}
-                    onChange={onChange}
+                    onChange={inputChange}
                     
                     />
                 </label>
@@ -104,17 +142,17 @@ const SignUp = (props) => {
                     placeholder="Your Password"
                     name="password"
                     value={formValue.password}
-                    onChange={onChange}
+                    onChange={inputChange}
                     
                     />
                 </label>
 
-                <label className="checkbox"> I accept the terms and conditions
+                <label className="checkbox"> I accept the Terms and Conditions
                     <input 
                     type='checkbox'
                     name="cbx"
-                    required
-                    // onChange={onChange}
+                    checked={formValue.cbx}
+                    onChange={inputChange}
 
                     
                     />
