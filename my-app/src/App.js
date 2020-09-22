@@ -11,9 +11,14 @@ function App() {
 
   return (
     <div className="App">
-      
+    <Route exact path="/">
       <SignUp />
-      {/* <Login /> */}
+    </Route>
+
+    <Route path="/Login">
+      <Login />
+    </Route>
+
     </div>
   );
 }

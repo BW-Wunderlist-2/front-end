@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import * as yup from 'yup'
 import schema from './schema'
+import axios from 'axios'
+import Login from './Login'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const StyledSignUp = styled.div`
     form{
@@ -11,36 +14,47 @@ const StyledSignUp = styled.div`
         flex-flow: column;
     }
     input{
-        width: 40%;
+        width: 30%;
         display: flex;
         margin: 2% auto;
         text-align: center;
     }
     h2{
         margin: 5% 0;
-        margin-bottom: 5%;
         justify-self: center;
+        margin-bottom: 0;
     }
 
     button{
-        width: 40%;
+        width: 10%;
         margin: 0 auto;
         text-align: center;
         padding: 1%;
+        margin-bottom: 2%
     }
     .checkbox{
         margin: 5% auto;
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     h3{
         font-size: 1rem;
         color: red;
     }
+    a{
+        font-size: 0.8rem;
+        text-align: center;
+        text-decoration: none;
+    }
+    a:visited{
+        text-decoration: none;
+    }
+    .container{
+        display:flex;
+        flex-flow:column;
+    }
 `
 
 const SignUp = (props) => {
-
-    
 
     
     const [formValue, setFormValue] = useState({
@@ -94,7 +108,7 @@ const SignUp = (props) => {
     const inputChange = (event) => {
         event.persist()
         validate(event)
-        let value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        let value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         setFormValue({...formValue, [event.target.name] : value})
     }
 
@@ -106,6 +120,7 @@ const SignUp = (props) => {
 
     return (
         <StyledSignUp>
+        <div className="container">
             <h2>Sign Up</h2>
             <form onSubmit={onSubmit}>
                 <h3>{errors.name}</h3>
@@ -125,7 +140,7 @@ const SignUp = (props) => {
                     />
                 </label>
 
-                <label> E-Mail
+                <label> E-mail
                     <input 
                     type='email'
                     placeholder="Your E-Mail"
@@ -153,6 +168,7 @@ const SignUp = (props) => {
                     name="cbx"
                     checked={formValue.cbx}
                     onChange={inputChange}
+                    value={formValue.cbx}
 
                     
                     />
@@ -160,7 +176,9 @@ const SignUp = (props) => {
                 </label>
 
                 <button onSubmit={onSubmit}>Submit</button>
+                <a href="/Login">Already registered? Click here to Sign in!</a>
             </form>
+        </div>
         </StyledSignUp>
     )
 }

@@ -13,6 +13,7 @@ export default yup.object().shape({
         .min(8, 'Password must be 8 characters or longer'),
 
     cbx: yup.boolean()
+        .required('You have to agree to the Terms of Service')
     
 })
 
