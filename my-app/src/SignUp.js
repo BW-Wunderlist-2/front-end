@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import * as yup from 'yup'
 import schema from './schema'
@@ -56,6 +56,8 @@ const StyledSignUp = styled.div`
 
 const SignUp = (props) => {
 
+
+    
     
     const [formValue, setFormValue] = useState({
         name: "",
@@ -65,6 +67,9 @@ const SignUp = (props) => {
 
     })
 
+   
+
+
     const [errors, setErrors] = useState({
         name: "",
         email: "",
@@ -72,6 +77,51 @@ const SignUp = (props) => {
         cbx: ""
 
     })
+    
+    const [user, setUser] = useState([])
+
+    useEffect(() => {
+        const getUser = () => {
+            axios.get("https://reqres.in/api/user")
+            .then(res => {
+                setUser(res.data.data)
+                console.log(res.data.data)
+            })
+            .catch(err => {
+                debugger
+            })
+        }
+        getUser()
+    },[])
+
+    const initialFormValue = {
+        name: "",
+        password: ""
+    }
+    
+    const postUserData = newUser => {
+        axios.post("https://reqres.in/api/user", newUser)
+             .then(res => {
+                 setUser([...user, res.data])
+                setFormValue(initialFormValue)
+                 console.log(res.data)
+             })
+            .catch(err => {
+                debugger
+              })
+    }
+
+    const formSubmit = () => {
+        const newUser = {
+            name: formValue.name.trim(), 
+            email: formValue.email.trim(), 
+            password: formValue.password.trim(), 
+            cbx: false
+        }
+        postUserData(newUser)
+    }
+
+    
 
     
 
@@ -100,7 +150,8 @@ const SignUp = (props) => {
 
     const onSubmit = (event) => {
         event.preventDefault()
-        setFormValue({name: "", email: "", password: "", cbx: false})
+        formSubmit()
+
         
     }
 
@@ -175,8 +226,8 @@ const SignUp = (props) => {
                     
                 </label>
 
-                <button onSubmit={onSubmit}>Submit</button>
-                <a href="/Login">Already registered? Click here to Sign in!</a>
+                <button>Submit</button>
+                <Link to="/Login">Already registered? Click here to Sign in!</Link>
             </form>
         </div>
         </StyledSignUp>
