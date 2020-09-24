@@ -20,6 +20,10 @@ const StyledSignUp = styled.div`
         padding: 0.8%;
         border: 3px solid #191970;
     }
+    input:hover{
+      transform: scale(1.3)
+    }
+
     h2{
         margin: 5% 0;
         justify-self: center;
@@ -34,7 +38,12 @@ const StyledSignUp = styled.div`
         margin-bottom: 2%;
         border: 3px solid #191970;
         font-weight: bold;
-        
+    }
+
+    button:hover{
+        background-color: #191970;
+        color: white;
+        transition: 1s;
     }
 
     label{

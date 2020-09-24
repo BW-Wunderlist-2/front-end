@@ -23,11 +23,9 @@ const StyledSignUp = styled.div`
         border: 3px solid #191970;
     }
     input:hover{
-        border: 3px solid 
+      transform: scale(1.3);
     }
-    input:hover{
-        
-    }
+
     .pw{
         margin-bottom: 5%;
     }
@@ -45,6 +43,11 @@ const StyledSignUp = styled.div`
         margin-bottom: 2%;
         border: 3px solid #191970;
         font-weight: bold;
+    }
+    button:hover{
+        background-color: #191970;
+        color: white;
+        transition: 1s;
     }
     h3{
         font-size: 1rem;
@@ -207,7 +210,7 @@ const Login = (props) => {
                     />
                 </label>
 
-                <button>Login</button>
+                <button>Sign in</button>
                 <Link to="/" className="clickLink">Not registered? Click here to Sign up!</Link>
 
             </form>
