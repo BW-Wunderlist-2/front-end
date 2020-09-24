@@ -127,9 +127,14 @@ const SignUp = (props) => {
     }
     
     const postUserData = newUser => {
-        axios.post("https://reqres.in/api/user", newUser)
+        const user = {
+            username: newUser.name,
+            password: newUser.password
+        }
+
+        axios.post("https://backend-for-wunderlist2.herokuapp.com/api/admission/register", user)
              .then(res => {
-                 setUser([...user, res.data])
+                 setUser(res.data.data)
                 setFormValue(initialFormValue)
                  console.log(res.data)
              })
