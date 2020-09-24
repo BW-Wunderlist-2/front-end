@@ -1,8 +1,10 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import * as yup from 'yup'
 import schema from './schema'
+import axios from 'axios'
 import {axiosWithAuth} from '../utils/axiosWithAuth'
+import { Link } from 'react-router-dom'
 
 const StyledSignUp = styled.div`
     form{
@@ -12,50 +14,132 @@ const StyledSignUp = styled.div`
         flex-flow: column;
     }
     input{
-        width: 40%;
+        width: 30%;
         display: flex;
         margin: 2% auto;
         text-align: center;
+        padding: 0.8%;
+        border: 3px solid #191970;
+    }
+    input:hover{
+      transform: scale(1.3)
     }
     h2{
         margin: 5% 0;
-        margin-bottom: 5%;
         justify-self: center;
+        margin-bottom: 0;
     }
     button{
-        width: 40%;
+        width: 15%;
         margin: 0 auto;
         text-align: center;
         padding: 1%;
+        margin-bottom: 2%;
+        border: 3px solid #191970;
+        font-weight: bold;
+    }
+    button:hover{
+        background-color: #191970;
+        color: white;
+        transition: 1s;
+    }
+    label{
+        font-size: 1.2em;
+        font-weight: bold;
     }
     .checkbox{
         margin: 5% auto;
-        font-size: 1rem;
+        font-size: 0.8rem;
     }
     h3{
         font-size: 1rem;
         color: red;
     }
+    a{
+        font-size: 0.8rem;
+        text-align: center;
+        text-decoration: none;
+    }
+    a:visited{
+        text-decoration: none;
+    }
+    .container{
+        display:flex;
+        flex-flow:column;
+        padding: 2%;
+        height: 100vh;
+        background-image: url("https://wp-media.petersons.com/blog/wp-content/uploads/2020/05/01182219/iStock-486552677.jpg");
+        background-image: no-repeat;
+        background-size: cover;
+        justify-content: center;
+        opacity: 0.8;
+    }
+    .clickLink{
+        text-decoration: none;
+        color: blue;
+    }
+    .signup{
+        font-size: 8em;
+    }
 `
 
-export const SignUp = (props) => {
- 
-    const [formValue, setFormValue] = useState({
+
+export const SignUp = (props) =>{
+
+
+    const {formValue,
+        setFormValue,
+        errors,
+        setErrors
+    } = props;
+    
+    const [user, setUser] = useState([])
+
+    useEffect(() => {
+        const getUser = () => {
+            axios.get("https://reqres.in/api/user")
+            .then(res => {
+                setUser(res.data.data)
+                console.log(res.data.data)
+            })
+            .catch(err => {
+                debugger
+            })
+        }
+        getUser()
+    },[])
+
+    const initialFormValue = {
         name: "",
-        email: "",
         password: "",
-        cbx: false
+        email: ""
+    }
+    
+    const postUserData = newUser => {
+        axios.post("https://reqres.in/api/user", newUser)
+             .then(res => {
+                 setUser([...user, res.data])
+                setFormValue(initialFormValue)
+                 console.log(res.data)
+             })
+            .catch(err => {
+                debugger
+              })
+    }
 
-    })
+    const formSubmit = () => {
+        const newUser = {
+            name: formValue.name, 
+            email: formValue.email, 
+            password: formValue.password,
+            cbx: false
+        }
+        postUserData(newUser)
+    }
 
-    const [errors, setErrors] = useState({
-        name: "",
-        email: "",
-        password: "",
-        cbx: ""
+    
 
-    })
-   
+    
 
     const validate = (event) => {
         yup
@@ -77,35 +161,30 @@ export const SignUp = (props) => {
         })
     }
    
+
+
     const onSubmit = (event) => {
-        event.preventDefault();
-        axiosWithAuth()
-        .post('api/admission/register',{
-            "username": formValue.email,
-            "password": formValue.password
-        })
-        .then((res)=>{
-            localStorage.setItem("token", res.data.token)
-            localStorage.setItem("UID", res.data.data.id)
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
-        setFormValue({name: "", email: "", password: "", cbx: false}) 
+        event.preventDefault()
+        setFormValue(formValue)
+        formSubmit()
+
+        
     }
 
     const inputChange = (event) => {
         event.persist()
         validate(event)
-        let value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
+        let value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
         setFormValue({...formValue, [event.target.name] : value})
     }
 
 
     return (
         <StyledSignUp>
-            <h2>Sign Up</h2>
+        <div className="container">
+            
             <form onSubmit={onSubmit}>
+                <h2 className="signup">Sign Up</h2>
                 <h3>{errors.name}</h3>
                 <h3>{errors.email}</h3>
                 <h3>{errors.password}</h3>
@@ -123,7 +202,7 @@ export const SignUp = (props) => {
                     />
                 </label>
 
-                <label> E-Mail
+                <label> E-mail
                     <input 
                     type='email'
                     placeholder="Your E-Mail"
@@ -151,14 +230,17 @@ export const SignUp = (props) => {
                     name="cbx"
                     checked={formValue.cbx}
                     onChange={inputChange}
+                    value={formValue.cbx}
 
                     
                     />
                     
                 </label>
 
-                <button onSubmit={onSubmit}>Submit</button>
+                <button>Submit</button>
+                <Link to="/Login" className="clickLink">Already registered? Click here to Sign in!</Link>
             </form>
+        </div>
         </StyledSignUp>
     )
 }
