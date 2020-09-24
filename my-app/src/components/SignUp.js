@@ -1,10 +1,11 @@
+
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import * as yup from 'yup'
 import schema from './schema'
 import axios from 'axios'
-import {axiosWithAuth} from '../utils/axiosWithAuth'
-import { Link } from 'react-router-dom'
+import {axiosWithAuth} from '../store/utils/axiosWithAuth'
+import { Link, useHistory } from 'react-router-dom'
 
 const StyledSignUp = styled.div`
     form{
@@ -86,7 +87,7 @@ const StyledSignUp = styled.div`
 
 export const SignUp = (props) =>{
 
-
+    const history = useHistory()
     const {formValue,
         setFormValue,
         errors,
@@ -135,6 +136,8 @@ export const SignUp = (props) =>{
             cbx: false
         }
         postUserData(newUser)
+
+
     }
 
     
@@ -165,10 +168,22 @@ export const SignUp = (props) =>{
 
     const onSubmit = (event) => {
         event.preventDefault()
+        axiosWithAuth().post("https://backend-for-wunderlist2.herokuapp.com/api/admission/register", {
+            "username": formValue.email,
+            "password": formValue.password
+        })
+        .then((res)=>{
+            console.log(res)
+            localStorage.setItem("token", res.data.token)
+            let user = res.data.data[0]
+            localStorage.setItem("UID", user.id)
+            history.push("/home")
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
         setFormValue(formValue)
         formSubmit()
-
-        
     }
 
     const inputChange = (event) => {

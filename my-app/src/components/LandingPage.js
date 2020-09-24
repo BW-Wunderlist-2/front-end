@@ -1,5 +1,6 @@
 import React from 'react';
-import {ToDos, AddToDo} from './'
+import ToDos from './ToDos'
+import AddToDo from './AddToDo'
 
 export const LandingPage=() =>{
     return(

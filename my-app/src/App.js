@@ -23,7 +23,6 @@ const [errors, setErrors] = useState({
 
   return (
     <div className="App">
-      <h1>Hello world</h1>
       <Route path='/signup' component={() => <SignUp formValue={formValue} setFormValue={setFormValue} errors={errors} setErrors={setErrors} />} />
       <Route path='/login' component={() =><Login formValue={formValue} setFormValue={setFormValue} errors={errors} setErrors={setErrors} />} />
       <PrivateRoute path='/home' component={LandingPage} />

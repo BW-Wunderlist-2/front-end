@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import * as yup from 'yup'
 import schema from './schema'
 import axios from 'axios'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, useHistory} from 'react-router-dom'
 
 
 const StyledSignUp = styled.div`
@@ -84,7 +84,7 @@ const StyledSignUp = styled.div`
 `
 
 export const Login = (props) => {
-
+    const history = useHistory()
     const {formValue,
             setFormValue,
             errors,
@@ -94,19 +94,19 @@ export const Login = (props) => {
 
     const [user, setUser] = useState([])
 
-    useEffect(() => {
-        const getUser = () => {
-            axios.get("https://reqres.in/api/user")
-            .then(res => {
-                setUser(res.data.data)
-                console.log(res.data.data)
-            })
-            .catch(err => {
-                debugger
-            })
-        }
-        getUser()
-    },[])
+    // useEffect(() => {
+    //     const getUser = () => {
+    //         axios.get("https://reqres.in/api/user")
+    //         .then(res => {
+    //             setUser(res.data.data)
+    //             console.log(res.data.data)
+    //         })
+    //         .catch(err => {
+    //             debugger
+    //         })
+    //     }
+    //     getUser()
+    // },[])
 
     const initialFormValue = {
         name: "",
@@ -160,9 +160,21 @@ export const Login = (props) => {
     
     const onSubmit = (event) => {
         event.preventDefault()
+        axios.post("https://backend-for-wunderlist2.herokuapp.com/api/admission/login", {
+            "username": formValue.name.trim(),
+            "password": formValue.password.trim()
+        })
+        .then((res) =>{
+            console.log(res)
+            localStorage.setItem("token", res.data.token)
+            localStorage.setItem("UID", res.data.id)
+            history.push("/home")
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
         setFormValue(formValue)
         formSubmit()
-        
     }
 
     const inputChange = (event) => {
@@ -183,10 +195,10 @@ export const Login = (props) => {
                 <h3>{errors.name}</h3>
                 <h3>{errors.password}</h3>
 
-                <label> Name
+                <label> Email
                     <input 
                     type='text'
-                    placeholder="Your Name"
+                    placeholder="Your Email"
                     name="name"
                     value={formValue.name}
                     onChange={inputChange}
