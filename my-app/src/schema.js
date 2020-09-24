@@ -14,7 +14,7 @@ export default yup.object().shape({
 
     cbx: yup.boolean()
         .required('You have to agree to the Terms of Service')
-    
+        .oneOf([false], 'Please Accept the Terms and Conditions')
 })
 
 

@@ -35,7 +35,7 @@ const StyledSignUp = styled.div`
         margin: 0 auto;
         text-align: center;
         padding: 1%;
-        margin-bottom: 2%;
+        margin-bottom: 4%;
         border: 3px solid #191970;
         font-weight: bold;
     }
@@ -86,6 +86,10 @@ const StyledSignUp = styled.div`
     .signup{
         font-size: 8em;
     }
+    .userList{
+        text-decoration: none;
+        color: black;
+    }
 `
 
 const SignUp = (props) => {
@@ -94,7 +98,9 @@ const SignUp = (props) => {
     const {formValue,
         setFormValue,
         errors,
-        setErrors
+        setErrors,
+        userFunc
+        
     } = props;
     
     const [user, setUser] = useState([])
@@ -116,13 +122,19 @@ const SignUp = (props) => {
     const initialFormValue = {
         name: "",
         password: "",
-        email: ""
+        email: "",
+        cbx: false
     }
     
     const postUserData = newUser => {
-        axios.post("https://reqres.in/api/user", newUser)
+        const user = {
+            username: newUser.name,
+            password: newUser.password
+        }
+
+        axios.post("https://backend-for-wunderlist2.herokuapp.com/api/admission/register", user)
              .then(res => {
-                 setUser([...user, res.data])
+                 setUser(res.data.data)
                 setFormValue(initialFormValue)
                  console.log(res.data)
              })
@@ -136,7 +148,7 @@ const SignUp = (props) => {
             name: formValue.name, 
             email: formValue.email, 
             password: formValue.password,
-            cbx: false
+            cbx: true
         }
         postUserData(newUser)
     }
@@ -172,6 +184,8 @@ const SignUp = (props) => {
         event.preventDefault()
         setFormValue(formValue)
         formSubmit()
+        userFunc()
+        
 
         
     }
@@ -250,6 +264,7 @@ const SignUp = (props) => {
 
                 <button>Submit</button>
                 <Link to="/Login" className="clickLink">Already registered? Click here to Sign in!</Link>
+                <Link to="/Userlist" className="userList">Checkout our Users!</Link>
             </form>
         </div>
         </StyledSignUp>
