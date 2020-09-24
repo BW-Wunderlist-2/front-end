@@ -3,10 +3,18 @@ import logo from './logo.svg';
 import './App.css';
 import SignUp from './SignUp'
 import Login from './Login'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom'
+import Userlist from './Userlist'
 
 function App() {
-  
+    
+
+    const [addUser, setAddUser] = useState([])
+    
+    function userFunc(){ 
+      setAddUser([...addUser, formValue])
+    }
+
     const [formValue, setFormValue] = useState({
       name: "",
       password: "",
@@ -18,31 +26,42 @@ function App() {
   const [errors, setErrors] = useState({
       name: "",
       password: "",
-      email: ""
+      email: "",
+      cbx: ""
 
   })
 
 
   return (
     <div className="App">
-    <Route exact path="/">
-      <SignUp 
-        formValue={formValue}
-        setFormValue={setFormValue}
-        errors={errors} 
-        setErrors={setErrors}
-      />
-    </Route>
+    
+      <Route exact path="/">
+        <SignUp 
+          formValue={formValue}
+          setFormValue={setFormValue}
+          errors={errors} 
+          setErrors={setErrors}
+          userFunc={userFunc}
+        />
+      </Route>
 
-    <Route path="/Login">
-      <Login 
-        formValue={formValue}
-        setFormValue={setFormValue}
-        errors={errors} 
-        setErrors={setErrors}
-      />
-    </Route>
+      <Route path="/Login">
+        <Login 
+          formValue={formValue}
+          setFormValue={setFormValue}
+          errors={errors} 
+          setErrors={setErrors}
+        />
+      </Route>
 
+      <Route path="/Userlist">
+        {
+          addUser.map(user => {
+            return <Userlist user={user}/>
+          })
+        }
+      </Route>
+    
     </div>
   );
 }
