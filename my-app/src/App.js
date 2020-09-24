@@ -7,13 +7,42 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 function App() {
   
-  
+    const [formValue, setFormValue] = useState({
+      name: "",
+      password: "",
+      email: "",
+      cbx: false
+
+  })
+
+  const [errors, setErrors] = useState({
+      name: "",
+      password: "",
+      email: ""
+
+  })
+
 
   return (
     <div className="App">
-      
-      <SignUp />
-      {/* <Login /> */}
+    <Route exact path="/">
+      <SignUp 
+        formValue={formValue}
+        setFormValue={setFormValue}
+        errors={errors} 
+        setErrors={setErrors}
+      />
+    </Route>
+
+    <Route path="/Login">
+      <Login 
+        formValue={formValue}
+        setFormValue={setFormValue}
+        errors={errors} 
+        setErrors={setErrors}
+      />
+    </Route>
+
     </div>
   );
 }
