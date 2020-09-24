@@ -9,7 +9,11 @@ import Userlist from './Userlist'
 function App() {
     
 
-    const [addUser, setAddUser] = useState([])
+    const [addUser, setAddUser] = useState([{
+      name: "Paul",
+      password: "paul123",
+      email: "paul@paul.com"
+    }])
     
     function userFunc(){ 
       setAddUser([...addUser, formValue])
