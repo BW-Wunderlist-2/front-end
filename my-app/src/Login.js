@@ -6,8 +6,7 @@ import axios from 'axios'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 
-
-const StyledLogin = styled.div`
+const StyledSignUp = styled.div`
     form{
         width: 60%;
         display: flex;
@@ -20,6 +19,14 @@ const StyledLogin = styled.div`
         display: flex;
         margin: 2% auto;
         text-align: center;
+        padding: 0.8%;
+        border: 3px solid #191970;
+    }
+    input:hover{
+        border: 3px solid 
+    }
+    input:hover{
+        
     }
     .pw{
         margin-bottom: 5%;
@@ -31,16 +38,42 @@ const StyledLogin = styled.div`
     }
 
     button{
-        width: 10%;
+        width: 15%;
         margin: 0 auto;
         text-align: center;
         padding: 1%;
         margin-bottom: 2%;
+        border: 3px solid #191970;
+        font-weight: bold;
     }
     h3{
         font-size: 1rem;
         color: red;
     }
+    label{
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
+    .container{
+        display:flex;
+        flex-flow:column;
+        padding: 2%;
+        height: 100vh;
+        background-image: url("https://wp-media.petersons.com/blog/wp-content/uploads/2020/05/01182219/iStock-486552677.jpg");
+        background-image: no-repeat;
+        background-size: cover;    
+        justify-content: center;
+        opacity: 0.8;
+    }
+    .clickLink{
+        text-decoration: none;
+        color: blue;
+    }
+    .signin{
+        font-size: 8em;
+    }
+
     a{
         font-size: 0.8rem;
         text-align: center;
@@ -51,20 +84,14 @@ const StyledLogin = styled.div`
     }
 `
 
-const Login = () => {
+const Login = (props) => {
 
-    const [formValue, setFormValue] = useState({
-        name: "",
-        password: "",
-
-    })
-
-    const [errors, setErrors] = useState({
-        name: "",
-        password: "",
-
-    })
-
+    const {formValue,
+            setFormValue,
+            errors,
+            setErrors,
+            style
+        } = props;
 
     const [user, setUser] = useState([])
 
@@ -149,10 +176,11 @@ const Login = () => {
 
 
     return (
-        <StyledLogin>
-
-            <h2>Sign In</h2>
+        <StyledSignUp>
+        <div className="container">
+            
             <form onSubmit={onSubmit}>
+                <h2 className="signin">Sign In</h2>
                 <h3>{errors.name}</h3>
                 <h3>{errors.password}</h3>
 
@@ -180,10 +208,11 @@ const Login = () => {
                 </label>
 
                 <button>Login</button>
-                <Link to="/">Not registered? Click here to Sign up!</Link>
+                <Link to="/" className="clickLink">Not registered? Click here to Sign up!</Link>
 
             </form>
-        </StyledLogin>
+        </div>
+        </StyledSignUp>
     )
 }
 

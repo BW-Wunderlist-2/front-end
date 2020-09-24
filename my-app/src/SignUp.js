@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import * as yup from 'yup'
 import schema from './schema'
 import axios from 'axios'
-import Login from './Login'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 const StyledSignUp = styled.div`
@@ -18,6 +17,8 @@ const StyledSignUp = styled.div`
         display: flex;
         margin: 2% auto;
         text-align: center;
+        padding: 0.8%;
+        border: 3px solid #191970;
     }
     h2{
         margin: 5% 0;
@@ -26,12 +27,21 @@ const StyledSignUp = styled.div`
     }
 
     button{
-        width: 10%;
+        width: 15%;
         margin: 0 auto;
         text-align: center;
         padding: 1%;
-        margin-bottom: 2%
+        margin-bottom: 2%;
+        border: 3px solid #191970;
+        font-weight: bold;
+        
     }
+
+    label{
+        font-size: 1.2em;
+        font-weight: bold;
+    }
+
     .checkbox{
         margin: 5% auto;
         font-size: 0.8rem;
@@ -51,32 +61,32 @@ const StyledSignUp = styled.div`
     .container{
         display:flex;
         flex-flow:column;
+        padding: 2%;
+        height: 100vh;
+        background-image: url("https://wp-media.petersons.com/blog/wp-content/uploads/2020/05/01182219/iStock-486552677.jpg");
+        background-image: no-repeat;
+        background-size: cover;
+        justify-content: center;
+        opacity: 0.8;
+
+    }
+    .clickLink{
+        text-decoration: none;
+        color: blue;
+    }
+    .signup{
+        font-size: 8em;
     }
 `
 
 const SignUp = (props) => {
 
 
-    
-    
-    const [formValue, setFormValue] = useState({
-        name: "",
-        email: "",
-        password: "",
-        cbx: false
-
-    })
-
-   
-
-
-    const [errors, setErrors] = useState({
-        name: "",
-        email: "",
-        password: "",
-        cbx: ""
-
-    })
+    const {formValue,
+        setFormValue,
+        errors,
+        setErrors
+    } = props;
     
     const [user, setUser] = useState([])
 
@@ -96,7 +106,8 @@ const SignUp = (props) => {
 
     const initialFormValue = {
         name: "",
-        password: ""
+        password: "",
+        email: ""
     }
     
     const postUserData = newUser => {
@@ -113,9 +124,9 @@ const SignUp = (props) => {
 
     const formSubmit = () => {
         const newUser = {
-            name: formValue.name.trim(), 
-            email: formValue.email.trim(), 
-            password: formValue.password.trim(), 
+            name: formValue.name, 
+            email: formValue.email, 
+            password: formValue.password,
             cbx: false
         }
         postUserData(newUser)
@@ -150,6 +161,7 @@ const SignUp = (props) => {
 
     const onSubmit = (event) => {
         event.preventDefault()
+        setFormValue(formValue)
         formSubmit()
 
         
@@ -172,8 +184,9 @@ const SignUp = (props) => {
     return (
         <StyledSignUp>
         <div className="container">
-            <h2>Sign Up</h2>
+            
             <form onSubmit={onSubmit}>
+                <h2 className="signup">Sign Up</h2>
                 <h3>{errors.name}</h3>
                 <h3>{errors.email}</h3>
                 <h3>{errors.password}</h3>
@@ -227,7 +240,7 @@ const SignUp = (props) => {
                 </label>
 
                 <button>Submit</button>
-                <Link to="/Login">Already registered? Click here to Sign in!</Link>
+                <Link to="/Login" className="clickLink">Already registered? Click here to Sign in!</Link>
             </form>
         </div>
         </StyledSignUp>
