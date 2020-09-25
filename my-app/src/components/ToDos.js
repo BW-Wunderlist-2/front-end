@@ -1,31 +1,26 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import ToDo from './ToDo'
-import {fetchTodos} from '../store/actions'
+import {fetchTodos, addToDo} from '../store/actions'
 
-
-
-
-export const ToDos = (props) => {
+export const ToDos = ({taskList, addToDo, getTasks}) => {  
+   
    useEffect(()=>{
-      props.fetchTodos();
-   },[])
-   console.log("props.tasks=",props.tasks)
-   let taskList = props.tasks.data
-   console.log("taskList", taskList)
+      getTasks()
+   }, [addToDo])
+
    return( <>
-      {/* {taskList.map((task) =>{
-         return <ToDo key={task.id} task={task} />
-      })} */}
+      {taskList.map((task) =>{
+         return <ToDo key={task.id} task={task} getTasks={getTasks}/>
+      })}
    </>
    )
 }
 function mapStateToProps(state){
    return{
-      tasks: state.tasks,
       loadingTasks: state.loadingTasks,
       errorMessage:state.errorMessage
    }
 }
 
-export default connect(mapStateToProps, {fetchTodos})(ToDos);
+export default connect(mapStateToProps, {fetchTodos, addToDo})(ToDos);

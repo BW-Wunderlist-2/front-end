@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
-import {connect} from 'react-redux'
-import {addToDo} from '../store/actions'
+import React, {useState} from 'react'
+import {axiosWithAuth} from '../store/utils/axiosWithAuth'
+import {useHistory} from 'react-router-dom'
 
-export const AddToDo = (props) =>{
+
+export default function EditTask(props){
+    const history= useHistory()
+    const taskId = localStorage.getItem("taskID")
     const initForm={
         task:'',
         description:'',
@@ -18,15 +21,18 @@ export const AddToDo = (props) =>{
     }
     const handleSubmit = (e) =>{
         e.preventDefault();
-        const newTask ={
+        const editTask ={
         "task":form.task.trim(),
         "description":form.description.trim(),
         "complete": false,
         "dueDate": form.dueDate.trim()
         }
-        props.addToDo(newTask);
-        props.getTasks()
-        setForm(initForm);
+        //put req here
+        axiosWithAuth().put(`https://backend-for-wunderlist2.herokuapp.com/api/single-task/${taskId}`, editTask)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+        //push to home with history
+        history.push('/home')
     }
     return(
         <div>
@@ -58,16 +64,8 @@ export const AddToDo = (props) =>{
                     onChange={handleChange} 
                     />
                 </label>
-                <button>Submit New Task</button>
+                <button>Done Editing</button>
             </form>
         </div>
     )
 }
-
-function mapStateToProps(state){
-    return{
-        tasks: state.tasks
-    }
-}
-
-export default connect(mapStateToProps, {addToDo})(AddToDo)
